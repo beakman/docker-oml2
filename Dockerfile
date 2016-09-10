@@ -13,11 +13,17 @@ RUN apt-get upgrade -y
 # editor
 RUN apt-get install -y vim
 
-# install postgres
-RUN apt-get install -y postgresql postgresql-contrib libpq-dev
+# wget and certificates manager
+RUN apt-get install -y ca-certificates wget
+
+# install postgres 9.3
+RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ wheezy-pgdg main' >> /etc/apt/sources.list.d/pgdg.list
+RUN wget https://www.postgresql.org/media/keys/ACCC4CF8.asc
+RUN apt-key add ACCC4CF8.asc
+RUN apt-get update
+RUN apt-get install -y postgresql-9.3
 
 # install oml2-server
-RUN apt-get install -y ca-certificates wget
 RUN wget http://download.opensuse.org/repositories/devel:tools:mytestbed:stable/Debian_7.0/Release.key
 RUN apt-key add - < Release.key
 RUN echo 'deb http://download.opensuse.org/repositories/devel:/tools:/mytestbed:/stable/Debian_7.0/ /' >> /etc/apt/sources.list.d/oml2.list
@@ -34,8 +40,8 @@ ADD conf/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 # ADD conf/start-services.sh /start-services.sh
 
 # configure postgresql
-RUN echo "host all all  0.0.0.0/0 md5" >> /etc/postgresql/9.1/main/pg_hba.conf
-RUN echo "listen_addresses='*'" >> /etc/postgresql/9.1/main/postgresql.conf
+RUN echo "host all all  0.0.0.0/0 md5" >> /etc/postgresql/9.3/main/pg_hba.conf
+RUN echo "listen_addresses='*'" >> /etc/postgresql/9.3/main/postgresql.conf
 
 # start postgres & create db/user for oml2-server
 RUN service postgresql start && \
