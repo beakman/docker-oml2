@@ -26,12 +26,12 @@ RUN apt-get install -y oml2 oml2-generator oml2-apps
 RUN echo 'OPTS="$OPTS --backend postgresql --pg-host=localhost --pg-port=5432 --pg-user=oml --pg-pass=tester"' >> /etc/default/oml2-server
 
 # supervisord
-# RUN mkdir -p /var/log/supervisor
-# RUN apt-get install -y supervisor
+RUN mkdir -p /var/log/supervisor
+RUN apt-get install -y supervisor
 
 # config for auto start oml2-server/postgresql
-#ADD conf/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-ADD conf/start-services.sh /start-services.sh
+ADD conf/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+# ADD conf/start-services.sh /start-services.sh
 
 # configure postgresql
 RUN echo "host all all  0.0.0.0/0 md5" >> /etc/postgresql/9.1/main/pg_hba.conf
@@ -47,5 +47,5 @@ RUN service postgresql start && \
 EXPOSE 5432 3003
 
 # run supervisord in foreground
-#CMD ["/usr/bin/supervisord", "--nodaemon"]
-CMD ["bash", "/start-services.sh", "--nodaemon"]
+CMD ["/usr/bin/supervisord", "--nodaemon"]
+# CMD ["bash", "/start-services.sh", "--nodaemon"]
