@@ -2,6 +2,9 @@
 # https://github.com/beakman/docker-oml2
 #
 # VERSION 0.1.0
+#
+# Build: docker build -t fsalido/oml2-server .
+# Run: docker run -ti -p 5432:5432 -p 3003:3003 fsalido/oml2-server
 
 FROM debian:7
 MAINTAINER Francisco Salido <psalido@gmail.com>
@@ -47,11 +50,11 @@ RUN echo "listen_addresses='*'" >> /etc/postgresql/9.3/main/postgresql.conf
 RUN service postgresql start && \
     su postgres sh -c "createdb omldb" && \
     su postgres sh -c "createuser --no-superuser --createdb --no-createrole oml" && \
-    su postgres sh -c "psql -c \"ALTER USER oml WITH PASSWORD 'tester';\" "
+    su postgres sh -c "psql -c \"ALTER USER oml WITH PASSWORD 'tester';\" "	
 
 # test data
-RUN service oml2-server start && \
-	oml2-generator --amplitude 1 --frequency 1000 --samples 10 --sample-interval .1 --oml-id localservertest --oml-domain installtest --oml-collect localhost
+# RUN service oml2-server start && \
+# 	oml2-generator --amplitude 1 --frequency 1000 --samples 10 --sample-interval .1 --oml-id localservertest --oml-domain installtest --oml-collect localhost
 
 # ports for ssh/oml2
 EXPOSE 5432 3003
