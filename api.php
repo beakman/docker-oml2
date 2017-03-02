@@ -1023,8 +1023,6 @@ class PHP_CRUD_API {
 		$blacklist = array('information_schema','mysql','sys','pg_catalog');
 		if (in_array(strtolower($database), $blacklist)) return array();
 		$table_list = array();
-		echo "reflect_table: ".$this->db->getSql('reflect_table');
-		var_dump(array($table,$database));
 		if ($result = $this->db->query($this->db->getSql('reflect_table'),array($table,$database))) {
 			while ($row = $this->db->fetchRow($result)) $table_list[] = $row[0];
 			$this->db->close($result);
@@ -2266,7 +2264,7 @@ class PHP_CRUD_API {
 
 $api = new PHP_CRUD_API(array(
 	'dbengine'=>'PostgreSQL',
-	'hostname'=>'94.177.232.57',
+	'hostname'=>'localhost',
 	'username'=>'oml',
 	'password'=>'tester',
 	'database'=>'',
